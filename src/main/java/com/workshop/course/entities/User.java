@@ -1,17 +1,22 @@
 package com.workshop.course.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.workshop.course.entities.enums.UserRoles;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
 
 @Entity
 @Table(name = "tb_user")
-public class User implements Serializable {
+public class User implements UserDetails, Serializable {
 
     private static final long  serialVersionUID = 1L;
     @Id
@@ -21,6 +26,7 @@ public class User implements Serializable {
     private String email;
     private String phone;
     private String password;
+    private UserRoles role;
 
     @JsonIgnore
     @OneToMany(mappedBy = "client")
@@ -30,12 +36,21 @@ public class User implements Serializable {
 
     }
 
-    public User(Long id, String name, String email, String phone, String password) {
+    public User (String name, String email, String phone, String password, UserRoles role){
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.password = password;
+        this.role = role;
+    }
+
+    public User(Long id, String name, String email, String phone, String password, UserRoles role) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.password = password;
+        this.role = role;
     }
 
     public Long getId() {
@@ -70,8 +85,39 @@ public class User implements Serializable {
         this.phone = phone;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.role == UserRoles.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {
