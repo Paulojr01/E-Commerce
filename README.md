@@ -5,7 +5,7 @@
 ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
 
-Este projeto é uma API construída usando **Java, Spring Framework, banco de dados PostgreSQL, Spring Security e JWT para controle de autenticação.**
+Este projeto é uma API construída utilizando **Java, Spring Framework, banco de dados PostgreSQL, Spring Security e JWT para controle de autenticação.**
 
 A API está sendo desenvolvida com o intuito de aplicar os conhecimentos adquiridos ao longo dos meus estudos acadêmicos.
 
